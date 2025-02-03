@@ -22,16 +22,19 @@
     align-items: center;
     /* background-color: blue;  Container background set to blue */
     padding: 20px;
-    height: calc(100vh - 80px); /* Adjust height based on header height */
+    /* height: calc(100vh - 80px); Adjust height based on header height */
     flex-wrap: wrap;
     padding: -10px;
+    height: 92vh;
+    width: 100vw;
+    overflow-x:hidden;
   }
   
   /* Style for each div (box) */
   .box {
     background-color: white; /* You can change this if you want the boxes to also be blue */
     width: 600px;
-    height: 200px;
+    height: 100%;
     gap: 20px;
     display: flex;
     justify-content: center;
@@ -47,9 +50,10 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      height: 100%;
   }
   .Bigbox1{
-      height: 410px;
+      height: 100%;
       width: 50%;
       color: #333;
       border-radius: 8px;

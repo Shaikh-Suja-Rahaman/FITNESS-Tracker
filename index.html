@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Welcome Screen</title>
+  <link rel="stylesheet" href="indexStyle.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <h1 class="Welcome-header"></h1>
+  </header>
+  
+  <div class="welcome-container">
+    <div class="Bigbox1 glass">
+        <h2>Workout Logger</h2>
+        <canvas id="myChart"></canvas>
+        <br>
+        <form id="WorkoutLoggingForm" style="display: inline;">
+          <select id="SelectWorkout" required>
+            <option value="" disabled selected>Select Workout</option>
+            <option value="Arms">Arms</option>
+            <option value="Shoulders">Shoulders</option>
+            <option value="Legs">Legs</option>
+            <option value="Chest">Chest</option>
+            <option value="Back">Back</option>
+            <option value="Abs">Abs</option>
+            <option value="Cardio">Cardio</option>
+          </select>
+          <input type="number" id="caloriesBurnt" placeholder="Enter Calories Burnt (kcal)" step="any" required>
+          <button type="submit">Submit</button>
+        </form>
+        <button onclick="location.href = 'WorkoutLogger.html';">Details</button>
+        <input type="text" id="totalCaloriesBurnt" readonly>
+        <br>
+        
+    </div>
+    <div class="Bigbox2 glass">
+        <div class="box glass">2</div>
+        <div class="box glass">3</div>
+    </div>
+  </div>
+</body>
+<script src="script.js"></script>
+</html>

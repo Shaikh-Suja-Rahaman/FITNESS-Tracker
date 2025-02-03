@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Workout Logger</title>
+  <style>
+    /* Basic resets and typography */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      color: #333;
+    }
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    /* Form styling */
+    form {
+      max-width: 600px;
+      margin: 0 auto 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    form div {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background: #5dc1b9;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #4da6a0;
+    }
+    /* Table styling */
+    #workoutListContainer {
+      max-width: 800px;
+      margin: 20px auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+  <h1>Workout Logger</h1>
+  <form id="workoutForm">
+    <div>
+      <label for="date">Date</label>
+      <input type="date" id="date" required>
+    </div>
+    <div>
+      <label for="exercise">Exercise Name</label>
+      <input type="text" id="exercise" placeholder="e.g., Bench Press, Running" required>
+    </div>
+    <div>
+      <label for="type">Workout Type</label>
+      <select id="type" required>
+        <option value="" disabled selected>Select type</option>
+        <option value="strength">Strength</option>
+        <option value="cardio">Cardio</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <!-- Strength training fields -->
+    <div id="strengthFields" style="display:none;">
+      <div>
+        <label for="sets">Sets</label>
+        <input type="number" id="sets" placeholder="Number of sets" min="1">
+      </div>
+      <div>
+        <label for="reps">Reps per set</label>
+        <input type="number" id="reps" placeholder="Number of reps" min="1">
+      </div>
+      <div>
+        <label for="weight">Weight (kg)</label>
+        <input type="number" id="weight" placeholder="Weight used" step="any">
+      </div>
+    </div>
+    <!-- Cardio fields -->
+    <div id="cardioFields" style="display:none;">
+      <div>
+        <label for="duration">Duration (minutes)</label>
+        <input type="number" id="duration" placeholder="Workout duration in minutes" min="1">
+      </div>
+      <div>
+        <label for="distance">Distance (km)</label>
+        <input type="number" id="distance" placeholder="Distance covered" step="any">
+      </div>
+    </div>
+    <div>
+      <label for="notes">Notes</label>
+      <textarea id="notes" placeholder="Additional observations" rows="3"></textarea>
+    </div>
+    <button type="submit">Log Workout</button>
+  </form>
+
+  <div id="workoutListContainer">
+    <h2>Logged Workouts</h2>
+    <table id="workoutTable">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Exercise</th>
+          <th>Type</th>
+          <th>Details</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Workout entries will be dynamically added here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Show/hide additional fields based on workout type
+    const typeSelect = document.getElementById('type');
+    typeSelect.addEventListener('change', function() {
+      const strengthFields = document.getElementById('strengthFields');
+      const cardioFields = document.getElementById('cardioFields');
+      if (this.value === 'strength') {
+        strengthFields.style.display = 'block';
+        cardioFields.style.display = 'none';
+      } else if (this.value === 'cardio') {
+        strengthFields.style.display = 'none';
+        cardioFields.style.display = 'block';
+      } else {
+        strengthFields.style.display = 'none';
+        cardioFields.style.display = 'none';
+      }
+    });
+
+    // Handle form submission to log a workout
+    document.getElementById('workoutForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Build a workout object from the form inputs
+      const workout = {
+        date: document.getElementById('date').value,
+        exercise: document.getElementById('exercise').value,
+        type: document.getElementById('type').value,
+        details: '',
+        notes: document.getElementById('notes').value
+      };
+
+      if (workout.type === 'strength') {
+        const sets = document.getElementById('sets').value;
+        const reps = document.getElementById('reps').value;
+        const weight = document.getElementById('weight').value;
+        workout.details = `Sets: ${sets}, Reps: ${reps}, Weight: ${weight} kg`;
+      } else if (workout.type === 'cardio') {
+        const duration = document.getElementById('duration').value;
+        const distance = document.getElementById('distance').value;
+        workout.details = `Duration: ${duration} min, Distance: ${distance} km`;
+      }
+
+      // Retrieve existing workouts from localStorage or initialize an empty array
+      let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+      workouts.push(workout);
+      localStorage.setItem('workouts', JSON.stringify(workouts));
+
+      // Reset the form and hide conditional fields
+      this.reset();
+      document.getElementById('strengthFields').style.display = 'none';
+      document.getElementById('cardioFields').style.display = 'none';
+
+      // Refresh the displayed workout log
+      loadWorkouts();
+    });
+
+    // Function to load and display workouts from localStorage
+    function loadWorkouts() {
+      const workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+      const tbody = document.querySelector('#workoutTable tbody');
+      tbody.innerHTML = '';  // Clear previous entries
+
+      workouts.forEach(workout => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${workout.date}</td>
+          <td>${workout.exercise}</td>
+          <td>${workout.type.charAt(0).toUpperCase() + workout.type.slice(1)}</td>
+          <td>${workout.details}</td>
+          <td>${workout.notes}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Load workouts when the page is loaded
+    window.onload = loadWorkouts;
+  </script>
+</body>
+</html>

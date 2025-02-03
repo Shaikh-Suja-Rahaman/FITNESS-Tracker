@@ -1,0 +1,70 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+  }
+  
+  header {
+    text-align:left;
+    /* margin-left: 5px; */
+    padding: 20px;
+    background-color: #7cc07c;
+  }
+  
+  /* Container for the four divs */
+  .welcome-container {
+    display: flex;
+    justify-content: space-evenly; /* Evenly space the divs */
+    align-items: center;
+    /* background-color: blue;  Container background set to blue */
+    padding: 20px;
+    height: calc(100vh - 80px); /* Adjust height based on header height */
+    flex-wrap: wrap;
+    padding: -10px;
+  }
+  
+  /* Style for each div (box) */
+  .box {
+    background-color: white; /* You can change this if you want the boxes to also be blue */
+    width: 600px;
+    height: 200px;
+    gap: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #333;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    
+  }
+
+  .Bigbox2 {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+  }
+  .Bigbox1{
+      height: 410px;
+      width: 50%;
+      color: #333;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      background-color: white;
+  }
+
+  .glass {
+    backdrop-filter: blur(2px) saturate(107%);
+    -webkit-backdrop-filter: blur(2px) saturate(107%);
+    background-color: rgba(255, 255, 255, 0.41);
+    border-radius: 12px;
+    border: 1px solid rgba(209, 213, 219, 0.3);
+  }
+
+  #myChart {
+    padding: 20px;
+  }

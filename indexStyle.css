@@ -11,8 +11,14 @@
   header {
     text-align:left;
     /* margin-left: 5px; */
-    padding: 20px;
+    padding: 5px;
     background-color: #7cc07c;
+    font-size: 12px;
+  }
+
+  .Welcome-header{
+    display: flex;
+    justify-content: center;
   }
   
   /* Container for the four divs */

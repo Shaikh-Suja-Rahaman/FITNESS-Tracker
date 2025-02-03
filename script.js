@@ -1,3 +1,6 @@
+let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+let name = userInfo.username;
+document.querySelector('.Welcome-header').textContent = `Welcome ${name}`;
 document.addEventListener("DOMContentLoaded", function () {
     // Debugging userInfo
     let userInfo = localStorage.getItem("userInfo");

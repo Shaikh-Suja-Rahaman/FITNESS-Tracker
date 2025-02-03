@@ -86,7 +86,7 @@ input {
 }
 
 button {
-    background: #7363a1;
+    background: #8677b6;
     color: white;
     border: none;
     padding: 10px;
@@ -97,7 +97,8 @@ button {
 }
 
 button:hover {
-    background: #4da6a0;
+    background: #7363a1;
+
 }
 
 h1 {

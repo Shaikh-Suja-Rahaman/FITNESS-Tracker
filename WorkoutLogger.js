@@ -15,25 +15,44 @@ function displayWorkouts() {
     let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
     let workoutList = document.getElementById('workoutList');
     workoutList.innerHTML = '';
+
+    if (workouts.length === 0) {
+        let noWorkouts = document.createElement('h1');
+        noWorkouts.textContent = 'No workouts found.';
+        noWorkouts.style.textAlign = 'center';
+        noWorkouts.style.marginTop = '20px';
+        workoutList.appendChild(noWorkouts);
+        return;
+    }
+
+    let table = document.createElement('table');
+    let thead = document.createElement('thead');
+    let tbody = document.createElement('tbody');
+
+    thead.innerHTML = `
+        <tr>
+            <th>Workout Type</th>
+            <th>Calories Burnt</th>
+            <th>Duration (minutes)</th>
+            <th>Actions</th>
+        </tr>
+    `;
+
     workouts.forEach((workout, index) => {
-        let workoutEntry = document.createElement('div');
-        workoutEntry.className = 'workout-entry';
-        workoutEntry.innerHTML = `
-            <div>
-                <strong>${workout.type}</strong> - ${workout.calories} calories - ${workout.duration} minutes
-            </div>
-            <button class="btn2" onclick="deleteWorkout(${index})">Delete</button>
+        let row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${workout.type}</td>
+            <td>${workout.calories}</td>
+            <td>${workout.duration}</td>
+            <td><button class="btn2" onclick="deleteWorkout(${index})">Delete</button></td>
         `;
-        workoutList.appendChild(workoutEntry);
+        tbody.appendChild(row);
     });
-    workoutList = document.querySelector('#workoutList');
-if(workoutList.innerHTML === '') {
-    let noWorkouts = document.createElement('h1');
-    noWorkouts.textContent = 'No workouts found.';
-    noWorkouts.style.textAlign = 'center';
-    noWorkouts.style.marginTop = '20px';
-    workoutList.appendChild(noWorkouts);
-}
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    workoutList.appendChild(table);
+    
 }
 
 function deleteWorkout(index) {
@@ -133,13 +152,3 @@ function updateChart() {
 
 // Initial chart update
 updateChart();
-
-
-let workoutList = document.querySelector('#workoutList');
-if(workoutList.innerHTML === '') {
-    let noWorkouts = document.createElement('h1');
-    noWorkouts.textContent = 'No workouts found.';
-    noWorkouts.style.textAlign = 'center';
-    noWorkouts.style.marginTop = '20px';
-    workoutList.appendChild(noWorkouts);
-}

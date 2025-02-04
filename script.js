@@ -144,3 +144,83 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log(getWorkouts());
 });
+
+
+
+const API_KEY = 'AIzaSyDcTKPG-1ZEA6eG98aCM9KorvCrIyBXVis';
+const chatHistory = [];
+
+function openModal() {
+    document.getElementById('modal-overlay').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('modal-overlay').style.display = 'none';
+}
+
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModal();
+    }
+});
+
+async function sendMessage() {
+    const userInput = document.getElementById('user-input');
+    const message = userInput.value.trim();
+    
+    if (!message) return;
+
+    addMessageToChat('user', message);
+    chatHistory.push({ role: 'user', parts: [{ text: "Keep your messages breif, you are a fitness advisor chat bot and you will respond to the following message : "+message }] });
+
+    try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: chatHistory,
+                generationConfig: {
+                    temperature: 0.7, 
+                    topK: 1,
+                    topP: 1,
+                    maxOutputTokens: 1000  // Reduced to generate shorter responses
+                }
+            })
+        });
+
+        const data = await response.json();
+        let botResponse = data.candidates[0]?.content?.parts[0]?.text || "Sorry, I couldn't generate a response.";
+
+        botResponse = formatResponse(botResponse);
+        addMessageToChat('bot', botResponse);
+        chatHistory.push({ role: 'model', parts: [{ text: botResponse }] });
+
+    } catch (error) {
+        console.error('Error:', error);
+        addMessageToChat('bot', "Sorry, I'm having trouble responding.");
+    }
+    
+    userInput.value = '';
+}
+
+function formatResponse(text) {
+    return text
+        .replace(/\*/g, "")  // Replace asterisks with bullet points
+        .replace(/(\n|\r)/g, "<br>") // Ensure proper line breaks
+        .trim();
+}
+
+function addMessageToChat(sender, text) {
+    const chatDiv = document.getElementById('chat-history');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}`;
+    messageDiv.innerHTML = text;  // Use innerHTML to preserve formatting
+    chatDiv.appendChild(messageDiv);
+    chatDiv.scrollTop = chatDiv.scrollHeight;
+}

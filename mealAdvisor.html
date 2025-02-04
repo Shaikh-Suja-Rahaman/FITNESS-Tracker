@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Food Nutrition Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #results {
+      margin-top: 20px;
+    }
+
+    .food-result {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #fafafa;
+    }
+
+    .food-result h3 {
+      margin-top: 0;
+    }
+
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="window.location.href = 'index.html';" style="position: absolute; left: 20%; top: 6%;">Back</button>
+  <h1 style="margin-top: 10px;">Food Nutrition Tracker</h1>
+  
+  
+  <div class="container">
+    <form id="foodForm">
+      <div class="form-group">
+        <label for="foodInput">Enter Food Item:</label>
+        <input type="text" id="foodInput" placeholder="e.g., 1 apple, 2 slices of pizza, chicken salad" required>
+      </div>
+      <button type="submit">Get Nutrition Info</button>
+    </form>
+    <div id="results"></div>
+  </div>
+
+  <script>
+    // Replace these with your Nutritionix API credentials
+    const APP_ID = 'e331f5d5';
+    const APP_KEY = '05ede4a4efa5d6b403d96a9b3910b71e';
+
+    document.getElementById('foodForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const foodItem = document.getElementById('foodInput').value.trim();
+      if (!foodItem) {
+        showError('Please enter a food item.');
+        return;
+      }
+      fetchNutritionInfo(foodItem);
+    });
+
+    async function fetchNutritionInfo(query) {
+      const url = "https://trackapi.nutritionix.com/v2/natural/nutrients";
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-app-id': APP_ID,
+            'x-app-key': APP_KEY
+          },
+          body: JSON.stringify({ query })
+        });
+
+        if (!response.ok) {
+          throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        displayResults(data);
+      } catch (error) {
+        console.error(error);
+        showError(error.message);
+      }
+    }
+
+    function displayResults(data) {
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = ''; // Clear previous results
+
+      if (data.foods && data.foods.length > 0) {
+        data.foods.forEach(food => {
+          const foodDiv = document.createElement('div');
+          foodDiv.className = 'food-result';
+
+          // Extract key nutrition details
+          const foodName = food.food_name || 'Unknown Food';
+          const servingQty = food.serving_qty || 'N/A';
+          const servingUnit = food.serving_unit || '';
+          const calories = food.nf_calories ? food.nf_calories + ' kcal' : 'N/A';
+          const totalFat = food.nf_total_fat ? food.nf_total_fat + ' g' : 'N/A';
+          const carbs = food.nf_total_carbohydrate ? food.nf_total_carbohydrate + ' g' : 'N/A';
+          const protein = food.nf_protein ? food.nf_protein + ' g' : 'N/A';
+
+          foodDiv.innerHTML = `
+            <h3>${foodName}</h3>
+            <p><strong>Serving Size:</strong> ${servingQty} ${servingUnit}</p>
+            <p><strong>Calories:</strong> ${calories}</p>
+            <p><strong>Total Fat:</strong> ${totalFat}</p>
+            <p><strong>Carbohydrates:</strong> ${carbs}</p>
+            <p><strong>Protein:</strong> ${protein}</p>
+          `;
+          resultsDiv.appendChild(foodDiv);
+        });
+      } else {
+        resultsDiv.innerHTML = '<p>No nutrition information found for the entered food item.</p>';
+      }
+    }
+
+    function showError(message) {
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = `<p class="error">${message}</p>`;
+    }
+  </script>
+</body>
+</html>

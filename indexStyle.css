@@ -159,3 +159,17 @@
     padding: 8px;
     margin-right: 10px;
 }
+
+.total-calories-box {
+  padding: 0px;
+  margin: 4px;
+  text-align: center;
+  min-width: 200px;
+}
+
+#totalCalories {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ff4444;
+  margin-top: 10px;
+}

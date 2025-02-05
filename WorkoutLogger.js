@@ -38,6 +38,8 @@ document.getElementById('workoutForm').addEventListener('submit', function(e) {
     // Update UI
     displayWorkouts();
     updateChart();
+    updateTotalCalories();
+    updateTotalDuration()
     // this.reset();
 });
 
@@ -108,6 +110,8 @@ function deleteWorkout(id) {
     localStorage.setItem('workouts', JSON.stringify(workouts));
     displayWorkouts();
     updateChart();
+    updateTotalCalories();
+    updateTotalDuration()
 }
 
 // Chart initialization
@@ -142,7 +146,7 @@ const myChart = new Chart(ctx, {
         },
         scales: {
             x: { title: { display: true, text: 'Workout Type' } },
-            y: { beginAtZero: true, title: { display: true, text: 'Value' } }
+            y: { beginAtZero: true, title: { display: true, text: 'Calories (kcal) & Duration (min)' } }
         }
     }
 });
@@ -170,8 +174,23 @@ function updateChart() {
 document.getElementById('filter').addEventListener('change', () => {
     displayWorkouts();
     updateChart();
+    updateTotalCalories();
+    updateTotalDuration();
 });
+
+function updateTotalCalories() {
+const workouts = getFilteredWorkouts();
+const total = workouts.reduce((sum, workout) => sum + Number(workout.calories), 0);
+document.getElementById('totalCalories').textContent = total;
+}
+function updateTotalDuration() { //To update Calories
+    const workouts = getFilteredWorkouts();
+    const total = workouts.reduce((sum, workout) => sum + Number(workout.duration), 0);
+    document.getElementById('totalDuration').textContent = total + " min";
+}
 
 // Initial display
 displayWorkouts();
 updateChart();
+updateTotalCalories();
+updateTotalDuration();

@@ -84,6 +84,19 @@
       border-radius: 4px;
       border: 1px solid #ccc;
     }
+    .total-calories-box {
+  padding: 20px;
+  margin: 10px;
+  text-align: center;
+  min-width: 200px;
+}
+
+#totalCalories {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #ff4444;
+  margin-top: 10px;
+}
   </style>
 </head>
 <body>
@@ -91,6 +104,14 @@
   <div class="flex-container">
     <div class="chart-container">
       <canvas id="myChart"></canvas>
+      <div class="total-calories-box glass">
+        <h3>Total Calories Burned</h3>
+        <div id="totalCalories">0</div>
+      </div>
+      <div class="total-duration-box glass">
+        <h3>Total Duration Spent</h3>
+        <div id="totalDuration">0</div>
+      </div>
     </div>
     <div class="form-container">
       <form id="workoutForm">
@@ -117,6 +138,7 @@
         <button type="submit">Add Workout</button>
       </form>
     </div>
+    
   </div>
   
   <h2 style="margin-top: 1.6rem;">Your Workouts</h2>

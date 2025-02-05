@@ -24,12 +24,21 @@
   
   <div class="welcome-container">
     <div class="Bigbox1 glass">
-        <h2>Workout Logger</h2>
+      <div class="chart-container">
         <canvas id="myChart"></canvas>
-        <br>
-        <form id="WorkoutLoggingForm" style="display: inline;">
-          <select id="SelectWorkout" required>
-            <option value="" disabled selected>Select Workout</option>
+        <div class="total-calories-box glass">
+          <h3>Total Calories Burned</h3>
+          <div id="totalCalories">0</div>
+        </div>
+        <div class="total-duration-box glass">
+          <h3>Total Duration Spent</h3>
+          <div id="totalDuration">0</div>
+        </div>
+      </div>
+      <div class="form-container">
+        <form id="workoutForm">
+          <label for="type">Workout Type</label>
+          <select id="type" required>
             <option value="Arms">Arms</option>
             <option value="Shoulders">Shoulders</option>
             <option value="Legs">Legs</option>
@@ -38,29 +47,46 @@
             <option value="Abs">Abs</option>
             <option value="Cardio">Cardio</option>
           </select>
-          <input type="number" id="caloriesBurnt" placeholder="Enter Calories Burnt (kcal)" step="any" required>
-          <input type="number" id="duration" placeholder="Enter duration (min)" step="any" required>
-          <button type="submit">Submit</button>
+          
+
+          
+          <label for="calories">Calories Burnt</label>
+          <input type="number" id="calories" required>
+          
+          <label for="duration">Duration (minutes)</label>
+          <input type="number" id="duration" required>
+
+          
+          
+          <button type="submit">Add Workout</button>
+          <button onclick="window.location.href = 'workoutLogger.html';">Details</Details></button>
         </form>
-        <button onclick="location.href = 'WorkoutLogger.html';">Details</button>
-        <input type="text" id="totalCaloriesBurnt" readonly>
-        <br>
-        
+      </div>
+      <!-- <h2 style="margin-top: 1.6rem;">Your Workouts</h2>
+      <select id="filter">
+        <option value="today">Today</option>
+        <option value="week">This Week</option>
+        <option value="all">All</option>
+      </select>
+      <div id="workoutList"></div> -->
+
+      
     </div>
     <div class="Bigbox2 glass">
-        <div class="box glass" style="display: flex; flex-direction: column;">
-            <h2>Food Nutrition Tracker</h2>
-            <button onclick="window.location.href = 'mealAdvisor.html';">Track Nutrition</button>
-        </div>
-        <div class="box glass" style="display: flex; flex-direction: column;">
-          <h2>Health Advisor ChatBot</h2>
-          <button id="chat-button" style="" onclick="openModal()">Open Chat</button>
-
-
-
-        </div>  
+      <div class="box glass" style="display: flex; flex-direction: column;">
+        <h2>Food Nutrition Tracker</h2>
+        <button onclick="window.location.href = 'mealAdvisor.html';">Track Nutrition</button>
+      </div>
+      <div class="box glass" style="display: flex; flex-direction: column;">
+        <h2>Health Advisor ChatBot</h2>
+        <button id="chat-button" style="" onclick="openModal()">Open Chat</button>
+        
+        
+        
+      </div>  
     </div>
   </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="script.js"></script>
 </html>

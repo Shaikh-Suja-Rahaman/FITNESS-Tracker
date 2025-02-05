@@ -18,134 +18,191 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.error("userInfo not found in localStorage");
     }
-
-    var ctx = document.getElementById("myChart").getContext("2d");
-    var myChart = new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: ["Arms", "Shoulders", "Legs", "Chest", "Back", "Abs", "Cardio"],
-            datasets: [
-                {
-                    label: "Calories Burned",
-                    data: [],
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    borderWidth: 1,
-                    fill: true
-                },
-                {
-                    label: "Workout Duration (minutes)",
-                    data: [],
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgb(54, 162, 235)',
-                    borderWidth: 1,
-                    fill: true
-                }
-            ]
-        },
-        options: {
-            plugins: {
-                legend: {
-                    display: true
-                }
-            },
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Workouts'
-                    }
-                },
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Values'
-                    }
-                }
-            }
-        }
-    });
-
-    function updateChart() {
-        let workouts = JSON.parse(localStorage.getItem("workouts")) || [];
-        let caloriesData = {
-            "Arms": 0,
-            "Shoulders": 0,
-            "Legs": 0,
-            "Chest": 0,
-            "Back": 0,
-            "Abs": 0,
-            "Cardio": 0
-        };
-        let durationData = {
-            "Arms": 0,
-            "Shoulders": 0,
-            "Legs": 0,
-            "Chest": 0,
-            "Back": 0,
-            "Abs": 0,
-            "Cardio": 0
-        };
-
-        let totalCalories = 0;
-
-        workouts.forEach(workout => {
-            if (caloriesData[workout.type] !== undefined) {
-                let calories = parseFloat(workout.calories);
-                let duration = parseFloat(workout.duration);
-                caloriesData[workout.type] += calories;
-                durationData[workout.type] += duration;
-                totalCalories += calories;
-            }
-        });
-
-        console.log("Calories Data:", caloriesData); // Debug log
-        console.log("Duration Data:", durationData); // Debug log
-        myChart.data.datasets[0].data = Object.values(caloriesData);
-        myChart.data.datasets[1].data = Object.values(durationData);
-        myChart.update();
-
-        document.getElementById("totalCaloriesBurnt").value = totalCalories;
-    }
-
-    updateChart();
-
-    let workoutForm = document.getElementById("WorkoutLoggingForm");
-
-    workoutForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-        let workout = document.getElementById("SelectWorkout").value;
-        let caloriesBurned = document.getElementById("caloriesBurnt").value;
-        let duration = document.getElementById("duration").value; // Corrected ID
-        saveWorkout(workout, caloriesBurned, duration);
-        updateChart();
-        console.log("Form submitted");
-    });
-
-    function saveWorkout(type, calories, duration) {
-        let workouts = JSON.parse(localStorage.getItem("workouts")) || [];
-
-        let newWorkout = {
-            type: type,
-            calories: calories,
-            duration: duration,
-            date: new Date().toISOString().split('T')[0]
-        };
-
-        workouts.push(newWorkout);
-        localStorage.setItem("workouts", JSON.stringify(workouts));
-    }
-
-    function getWorkouts() {
-        let workouts = JSON.parse(localStorage.getItem("workouts")) || [];
-        return workouts;
-    }
-
-    console.log(getWorkouts());
+    updateTotalCalories();
+    updateTotalDuration()
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    // Set default date to today
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    document.getElementById('date').value = `${yyyy}-${mm}-${dd}`;
+});
 
+document.getElementById('workoutForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get form values
+    const type = document.getElementById('type').value;
+    const calories = document.getElementById('calories').value;
+    const duration = document.getElementById('duration').value;
+    const now = new Date(); // gonna give me today's date in ist
+    const dateValue = new Date(now.getTime() + (5.5 * 60 * 60 * 1000)).toISOString().split('T')[0];;
+    console.log(dateValue);
+    
+    // Create date in local timezone
+    const [year, month, day] = dateValue.split('-');
+    const workoutDate = new Date(year, month - 1, day);
+    workoutDate.setHours(0, 0, 0, 0);
+    
+    // Create workout object
+    const workout = { 
+        id: Date.now(),
+        type,
+        calories, 
+        duration, 
+        date: workoutDate.toISOString() 
+    };
+    
+    // Save to localStorage
+    let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+    workouts.push(workout);
+    localStorage.setItem('workouts', JSON.stringify(workouts));
+    
+    // Update UI
+    // displayWorkouts();
+    updateChart();
+    updateTotalCalories();
+    updateTotalDuration()
+    // this.reset();
+});
+
+function getFilteredWorkouts() {
+    const filter = 'today';
+    let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+    
+    if (filter === 'all') return workouts;
+    
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const oneWeekAgo = new Date(today);
+    oneWeekAgo.setDate(today.getDate() - 6);
+    
+    return workouts.filter(workout => {
+        const workoutDate = new Date(workout.date);
+        const workoutDay = new Date(workoutDate.getFullYear(), workoutDate.getMonth(), workoutDate.getDate());
+        
+        if (filter === 'today') {
+            return workoutDay.getTime() === today.getTime();
+        }
+        if (filter === 'week') {
+            return workoutDay >= oneWeekAgo;
+        }
+        return true;
+    });
+}
+
+// function displayWorkouts() {
+//     const workouts = getFilteredWorkouts().reverse();
+//     const workoutList = document.getElementById('workoutList');
+//     workoutList.innerHTML = '';
+
+//     if (workouts.length === 0) {
+//         workoutList.innerHTML = '<h2 style="text-align:center; margin-top:20px;">No workouts found</h2>';
+//         return;
+//     }
+
+//     const table = document.createElement('table');
+//     table.innerHTML = `
+//         <thead>
+//             <tr>
+//                 <th>Type</th>
+//                 <th>Calories</th>
+//                 <th>Duration</th>
+//                 <th>Date</th>
+//                 <th>Actions</th>
+//             </tr>
+//         </thead>
+//         <tbody class="workout-table-body">
+//             ${workouts.map(workout => `
+//                 <tr>
+//                     <td>${workout.type}</td>
+//                     <td>${workout.calories}</td>
+//                     <td>${workout.duration}</td>
+//                     <td>${new Date(workout.date).toLocaleDateString()}</td>
+//                     <td><button class="btn2" onclick="deleteWorkout(${workout.id})">Delete</button></td>
+//                 </tr>
+//             `).join('')}
+//         </tbody>
+//     `;
+//     workoutList.appendChild(table);
+// }
+
+// function deleteWorkout(id) {
+//     let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+//     workouts = workouts.filter(workout => workout.id !== id);
+//     localStorage.setItem('workouts', JSON.stringify(workouts));
+//     displayWorkouts();
+//     updateChart();
+// }
+
+// Chart initialization
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ["Arms", "Shoulders", "Legs", "Chest", "Back", "Abs", "Cardio"],
+        datasets: [
+            {
+                label: "Calories Burned",
+                data: [],
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgb(255, 99, 132)',
+                borderWidth: 1,
+                fill: true
+            },
+            {
+                label: "Duration (minutes)",
+                data: [],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgb(54, 162, 235)',
+                borderWidth: 1,
+                fill: true
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: true }
+        },
+        scales: {
+            x: { title: { display: true, text: 'Workout Type' } },
+            y: { beginAtZero: true, title: { display: true, text: 'Calories (kcal) & Duration (min)' } }
+        }
+    }
+});
+
+function updateChart() {
+    const workouts = getFilteredWorkouts();
+    const categories = ["Arms", "Shoulders", "Legs", "Chest", "Back", "Abs", "Cardio"];
+    
+    const calorieData = categories.map(cat => 
+        workouts.filter(w => w.type === cat)
+                .reduce((sum, w) => sum + Number(w.calories), 0)
+    );
+    
+    const durationData = categories.map(cat => 
+        workouts.filter(w => w.type === cat)
+                .reduce((sum, w) => sum + Number(w.duration), 0)
+    );
+    
+    myChart.data.datasets[0].data = calorieData;
+    myChart.data.datasets[1].data = durationData;
+    myChart.update();
+}
+
+// Event listeners
+// document.getElementById('filter').addEventListener('change', () => {
+//     // displayWorkouts();
+//     updateChart();
+// });
+
+// Initial display
+// displayWorkouts();
+updateChart();
 
 const API_KEY = 'AIzaSyDcTKPG-1ZEA6eG98aCM9KorvCrIyBXVis';
 const chatHistory = [];
@@ -223,4 +280,17 @@ function addMessageToChat(sender, text) {
     messageDiv.innerHTML = text;  // Use innerHTML to preserve formatting
     chatDiv.appendChild(messageDiv);
     chatDiv.scrollTop = chatDiv.scrollHeight;
+}
+
+
+function updateTotalCalories() { //To update Calories
+    const workouts = getFilteredWorkouts();
+    const total = workouts.reduce((sum, workout) => sum + Number(workout.calories), 0);
+    document.getElementById('totalCalories').textContent = total+" kcal";
+}
+
+function updateTotalDuration() { //To update Calories
+    const workouts = getFilteredWorkouts();
+    const total = workouts.reduce((sum, workout) => sum + Number(workout.duration), 0);
+    document.getElementById('totalDuration').textContent = total + " min";
 }

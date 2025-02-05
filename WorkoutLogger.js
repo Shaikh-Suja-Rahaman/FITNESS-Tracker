@@ -1,74 +1,118 @@
-document.getElementById('workoutForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    let type = document.getElementById('type').value;
-    let calories = document.getElementById('calories').value;
-    let duration = document.getElementById('duration').value;
-    let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
-    let workout = { type, calories, duration, date: new Date().toISOString() };
-    workouts.push(workout);
-    localStorage.setItem('workouts', JSON.stringify(workouts));
-    displayWorkouts();
-    updateChart();
+document.addEventListener('DOMContentLoaded', function() {
+    // Set default date to today
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    document.getElementById('date').value = `${yyyy}-${mm}-${dd}`;
 });
 
-function displayWorkouts() {
+document.getElementById('workoutForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get form values
+    const type = document.getElementById('type').value;
+    const calories = document.getElementById('calories').value;
+    const duration = document.getElementById('duration').value;
+    const dateValue = document.getElementById('date').value;
+    
+    // Create date in local timezone
+    const [year, month, day] = dateValue.split('-');
+    const workoutDate = new Date(year, month - 1, day);
+    workoutDate.setHours(0, 0, 0, 0);
+    
+    // Create workout object
+    const workout = { 
+        id: Date.now(),
+        type, 
+        calories, 
+        duration, 
+        date: workoutDate.toISOString() 
+    };
+    
+    // Save to localStorage
     let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
-    let workoutList = document.getElementById('workoutList');
+    workouts.push(workout);
+    localStorage.setItem('workouts', JSON.stringify(workouts));
+    
+    // Update UI
+    displayWorkouts();
+    updateChart();
+    // this.reset();
+});
+
+function getFilteredWorkouts() {
+    const filter = document.getElementById('filter').value;
+    let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+    
+    if (filter === 'all') return workouts;
+    
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const oneWeekAgo = new Date(today);
+    oneWeekAgo.setDate(today.getDate() - 6);
+    
+    return workouts.filter(workout => {
+        const workoutDate = new Date(workout.date);
+        const workoutDay = new Date(workoutDate.getFullYear(), workoutDate.getMonth(), workoutDate.getDate());
+        
+        if (filter === 'today') {
+            return workoutDay.getTime() === today.getTime();
+        }
+        if (filter === 'week') {
+            return workoutDay >= oneWeekAgo;
+        }
+        return true;
+    });
+}
+
+function displayWorkouts() {
+    const workouts = getFilteredWorkouts().reverse();
+    const workoutList = document.getElementById('workoutList');
     workoutList.innerHTML = '';
 
     if (workouts.length === 0) {
-        let noWorkouts = document.createElement('h1');
-        noWorkouts.textContent = 'No workouts found.';
-        noWorkouts.style.textAlign = 'center';
-        noWorkouts.style.marginTop = '20px';
-        workoutList.appendChild(noWorkouts);
+        workoutList.innerHTML = '<h2 style="text-align:center; margin-top:20px;">No workouts found</h2>';
         return;
     }
 
-    let table = document.createElement('table');
-    let thead = document.createElement('thead');
-    let tbody = document.createElement('tbody');
-
-    thead.innerHTML = `
-        <tr>
-            <th>Workout Type</th>
-            <th>Calories Burnt</th>
-            <th>Duration (minutes)</th>
-            <th>Actions</th>
-        </tr>
+    const table = document.createElement('table');
+    table.innerHTML = `
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Calories</th>
+                <th>Duration</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody class="workout-table-body">
+            ${workouts.map(workout => `
+                <tr>
+                    <td>${workout.type}</td>
+                    <td>${workout.calories}</td>
+                    <td>${workout.duration}</td>
+                    <td>${new Date(workout.date).toLocaleDateString()}</td>
+                    <td><button class="btn2" onclick="deleteWorkout(${workout.id})">Delete</button></td>
+                </tr>
+            `).join('')}
+        </tbody>
     `;
-
-    workouts.forEach((workout, index) => {
-        let row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${workout.type}</td>
-            <td>${workout.calories}</td>
-            <td>${workout.duration}</td>
-            <td><button class="btn2" onclick="deleteWorkout(${index})">Delete</button></td>
-        `;
-        tbody.appendChild(row);
-    });
-
-    table.appendChild(thead);
-    table.appendChild(tbody);
     workoutList.appendChild(table);
-    
 }
 
-function deleteWorkout(index) {
+function deleteWorkout(id) {
     let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
-    workouts.splice(index, 1);
+    workouts = workouts.filter(workout => workout.id !== id);
     localStorage.setItem('workouts', JSON.stringify(workouts));
     displayWorkouts();
     updateChart();
 }
 
-// Initial display of workouts
-displayWorkouts();
-
-// Initialize Chart.js
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
+// Chart initialization
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
     type: 'line',
     data: {
         labels: ["Arms", "Shoulders", "Legs", "Chest", "Back", "Abs", "Cardio"],
@@ -82,7 +126,7 @@ var myChart = new Chart(ctx, {
                 fill: true
             },
             {
-                label: "Workout Duration (minutes)",
+                label: "Duration (minutes)",
                 data: [],
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgb(54, 162, 235)',
@@ -92,63 +136,42 @@ var myChart = new Chart(ctx, {
         ]
     },
     options: {
+        responsive: true,
         plugins: {
-            legend: {
-                display: true
-            }
+            legend: { display: true }
         },
         scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Workouts'
-                }
-            },
-            y: {
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: 'Values'
-                }
-            }
+            x: { title: { display: true, text: 'Workout Type' } },
+            y: { beginAtZero: true, title: { display: true, text: 'Value' } }
         }
     }
 });
 
 function updateChart() {
-    let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
-    let caloriesData = {
-        "Arms": 0,
-        "Shoulders": 0,
-        "Legs": 0,
-        "Chest": 0,
-        "Back": 0,
-        "Abs": 0,
-        "Cardio": 0
-    };
-    let durationData = {
-        "Arms": 0,
-        "Shoulders": 0,
-        "Legs": 0,
-        "Chest": 0,
-        "Back": 0,
-        "Abs": 0,
-        "Cardio": 0
-    };
-
-    workouts.forEach(workout => {
-        if (caloriesData[workout.type] !== undefined) {
-            let calories = parseFloat(workout.calories);
-            let duration = parseFloat(workout.duration);
-            caloriesData[workout.type] += calories;
-            durationData[workout.type] += duration;
-        }
-    });
-
-    myChart.data.datasets[0].data = Object.values(caloriesData);
-    myChart.data.datasets[1].data = Object.values(durationData);
+    const workouts = getFilteredWorkouts();
+    const categories = ["Arms", "Shoulders", "Legs", "Chest", "Back", "Abs", "Cardio"];
+    
+    const calorieData = categories.map(cat => 
+        workouts.filter(w => w.type === cat)
+                .reduce((sum, w) => sum + Number(w.calories), 0)
+    );
+    
+    const durationData = categories.map(cat => 
+        workouts.filter(w => w.type === cat)
+                .reduce((sum, w) => sum + Number(w.duration), 0)
+    );
+    
+    myChart.data.datasets[0].data = calorieData;
+    myChart.data.datasets[1].data = durationData;
     myChart.update();
 }
 
-// Initial chart update
+// Event listeners
+document.getElementById('filter').addEventListener('change', () => {
+    displayWorkouts();
+    updateChart();
+});
+
+// Initial display
+displayWorkouts();
 updateChart();

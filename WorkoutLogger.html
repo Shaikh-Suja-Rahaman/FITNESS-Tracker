@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Workout Logger</title>
   <style>
-    /* Basic resets and typography */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -21,71 +20,43 @@
       text-align: center;
       margin-bottom: 20px;
     }
-    /* Flex container for the chart and form */
     .flex-container {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
+      gap: 20px;
     }
-    /* Chart and form styling */
     .chart-container, .form-container {
       width: 48%;
-    }
-    .chart-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    form {
-      background: #fff;
+      background: white;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
     label {
-      display: block;
-      margin-bottom: 10px;
       font-weight: bold;
     }
     input, select {
       width: 100%;
       padding: 10px;
-      margin-bottom: 20px;
       border: 1px solid #ccc;
       border-radius: 4px;
     }
     button {
-      width: 100%;
-      padding: 10px;
       background: #5dc1b9;
       color: white;
       border: none;
+      padding: 10px;
       border-radius: 4px;
       cursor: pointer;
     }
     button:hover {
       background: #4da6a0;
-    }
-    .workout-entry {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      background: #fff;
-      border-radius: 4px;
-      margin-bottom: 10px;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    }
-    .workout-entry button {
-      background: #e74c3c;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      color: white;
-    }
-    .workout-entry button:hover {
-      background: #c0392b;
     }
     table {
       width: 100%;
@@ -99,6 +70,19 @@
     }
     th {
       background: #f4f4f4;
+    }
+    .btn2 {
+      background: #e74c3c;
+      padding: 5px 10px;
+    }
+    .btn2:hover {
+      background: #c0392b;
+    }
+    #filter {
+      margin: 10px 0;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
@@ -120,17 +104,29 @@
           <option value="Abs">Abs</option>
           <option value="Cardio">Cardio</option>
         </select>
+        
+        <label for="date">Date</label>
+        <input type="date" id="date" required>
+        
         <label for="calories">Calories Burnt</label>
-        <input type="number" id="calories" placeholder="Enter calories burnt" required>
+        <input type="number" id="calories" required>
+        
         <label for="duration">Duration (minutes)</label>
-        <input type="number" id="duration" placeholder="Enter duration" required>
+        <input type="number" id="duration" required>
+        
         <button type="submit">Add Workout</button>
       </form>
     </div>
   </div>
   
   <h2 style="margin-top: 1.6rem;">Your Workouts</h2>
+  <select id="filter">
+    <option value="today">Today</option>
+    <option value="week">This Week</option>
+    <option value="all">All</option>
+  </select>
   <div id="workoutList"></div>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="WorkoutLogger.js"></script>
 </body>

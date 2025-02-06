@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Welcome Screen</title>
   <link rel="stylesheet" href="indexStyle.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 </head>
 <body>
   <div id="modal-overlay">
@@ -25,7 +25,7 @@
   <div class="welcome-container">
     <div class="Bigbox1 glass">
       <div class="chart-container">
-        <canvas id="myChart"></canvas>
+        <div id="myChart"></div>
         <div class="total-calories-box glass">
           <h3>Total Calories Burned</h3>
           <div id="totalCalories">0</div>
@@ -59,7 +59,7 @@
           
           
           <button type="submit">Add Workout</button>
-          <button onclick="window.location.href = 'workoutLogger.html';">Details</Details></button>
+          <button onclick="window.location.href = 'workoutLogger.html'">Details</Details></button>
         </form>
       </div>
       <!-- <h2 style="margin-top: 1.6rem;">Your Workouts</h2>
@@ -79,7 +79,7 @@
       </div>
       <div class="box glass" style="display: flex; flex-direction: column;">
         <h2>Health Advisor ChatBot</h2>
-        <button id="chat-button" style="" onclick="openModal()">Open Chat</button>
+        <button id="chat-button" onclick="openModal()">Open Chat</button>
         
         
         
@@ -87,6 +87,9 @@
     </div>
   </div>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  -->
+ <!-- Remove Chart.js script -->
+<!-- Add ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script src="script.js"></script>
 </html>

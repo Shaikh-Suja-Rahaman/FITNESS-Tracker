@@ -115,42 +115,53 @@ function deleteWorkout(id) {
 }
 
 // Chart initialization
-const ctx = document.getElementById('myChart').getContext('2d');
-const myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ["Arms", "Shoulders", "Legs", "Chest", "Back", "Abs", "Cardio"],
-        datasets: [
+// Replace Chart.js initialization with ApexCharts
+let chart;
+
+function initializeChart() {
+    const options = {
+        chart: {
+            type: 'area',
+            height: 350,
+            toolbar: { show: false }
+        },
+        series: [
             {
-                label: "Calories Burned",
-                data: [],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgb(255, 99, 132)',
-                borderWidth: 1,
-                fill: true
+                name: "Calories Burned",
+                data: []
             },
             {
-                label: "Duration (minutes)",
-                data: [],
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgb(54, 162, 235)',
-                borderWidth: 1,
-                fill: true
+                name: "Duration (minutes)",
+                data: []
             }
-        ]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: { display: true }
+        ],
+        xaxis: {
+            categories: ["Arms", "Shoulders", "Legs", "Chest", "Back", "Abs", "Cardio"]
         },
-        scales: {
-            x: { title: { display: true, text: 'Workout Type' } },
-            y: { beginAtZero: true, title: { display: true, text: 'Calories (kcal) & Duration (min)' } }
-        }
-    }
-});
+        yaxis: {
+            title: {
+                text: 'Calories (kcal) & Duration (min)'
+            },
+            min: 0
+        },
+        tooltip: {
+            shared: true,
+            intersect: false
+        },
+        stroke: {
+            width: 2
+        },
+        fill: {
+            opacity: 0.2
+        },
+        colors: ['#FF4560', '#008FFB']
+    };
 
+    chart = new ApexCharts(document.querySelector("#myChart"), options);
+    chart.render();
+}
+
+// Remove the old updateChart function and replace with:
 function updateChart() {
     const workouts = getFilteredWorkouts();
     const categories = ["Arms", "Shoulders", "Legs", "Chest", "Back", "Abs", "Cardio"];
@@ -164,12 +175,17 @@ function updateChart() {
         workouts.filter(w => w.type === cat)
                 .reduce((sum, w) => sum + Number(w.duration), 0)
     );
-    
-    myChart.data.datasets[0].data = calorieData;
-    myChart.data.datasets[1].data = durationData;
-    myChart.update();
-}
 
+    chart.updateOptions({
+        series: [
+            { name: "Calories Burned", data: calorieData },
+            { name: "Duration (minutes)", data: durationData }
+        ],
+        xaxis: {
+            categories: categories
+        }
+    });
+}
 // Event listeners
 document.getElementById('filter').addEventListener('change', () => {
     displayWorkouts();
@@ -190,6 +206,7 @@ function updateTotalDuration() { //To update Calories
 }
 
 // Initial display
+initializeChart();
 displayWorkouts();
 updateChart();
 updateTotalCalories();

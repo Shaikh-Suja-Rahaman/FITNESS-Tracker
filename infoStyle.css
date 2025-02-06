@@ -10,7 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(to right, #536976, #292E49);
+    background: #292E49;
 }
 
 .container {

@@ -146,7 +146,8 @@ function initializeChart() {
     const options = {
         chart: {
             type: 'area',
-            height: 350,
+            height: 250,
+            width: 550,
             toolbar: { show: false }
         },
         series: [

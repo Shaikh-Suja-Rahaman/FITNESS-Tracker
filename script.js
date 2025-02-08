@@ -333,7 +333,7 @@ function updateTotalDuration() { //To update Calories
 
 function logout() {
     localStorage.removeItem('userInfo');
-    window.location.href = 'info.html';
+    window.location.href = 'index.html';
 }
 
 

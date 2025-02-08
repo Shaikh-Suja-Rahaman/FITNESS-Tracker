@@ -148,7 +148,8 @@ function initializeChart() {
             type: 'area',
             height: 250,
             width: 550,
-            toolbar: { show: false }
+            toolbar: { show: false },
+             // Dark mode background
         },
         series: [
             {
@@ -157,34 +158,44 @@ function initializeChart() {
             },
             {
                 name: "Duration (minutes)",
-                data: []
+                data: [0]
             }
         ],
         xaxis: {
-            categories: ["Arms", "Shoulders", "Legs", "Chest", "Back", "Abs", "Cardio"]
+            categories: ["Arms", "Shoulders", "Legs", "Chest", "Back", "Abs", "Cardio"],
+            labels: { style: { colors: '#ffffff' } }
         },
         yaxis: {
-            title: {
-                text: 'Calories (kcal) & Duration (min)'
-            },
+            title: { text: 'Calories (kcal) & Duration (min)', style: { color: '#ffffff' } },
+            labels: { style: { colors: '#ffffff' } },
             min: 0
         },
-        tooltip: {
-            shared: true,
-            intersect: false
-        },
+        tooltip: { theme: 'dark' }, // Dark tooltips
         stroke: {
-            width: 2
+            width: 3, // Thicker lines
+            curve: 'straight' // **Makes the chart pointy**
         },
         fill: {
-            opacity: 0.2
+            type: 'solid', // Ensures the area is filled
+            opacity: 0.3
         },
-        colors: ['#FF4560', '#008FFB']
+        grid: {
+            borderColor: '#444',
+            strokeDashArray: 4
+        },
+        colors: ['#FF6B6B', '#4DD0E1'],
+        dataLabels: { enabled: false }, // Remove peak labels
+        markers: {
+            size: 0, // Hide markers
+            hover: { size: 6 } // Show only on hover
+        },
+        legend: { labels: { colors: '#ffffff' } }
     };
 
     chart = new ApexCharts(document.querySelector("#myChart"), options);
     chart.render();
 }
+
 
 // Remove the old updateChart function and replace with:
 function updateChart() {
@@ -311,4 +322,9 @@ function updateTotalDuration() { //To update Calories
     const workouts = getFilteredWorkouts();
     const total = workouts.reduce((sum, workout) => sum + Number(workout.duration), 0);
     document.getElementById('totalDuration').textContent = total + " min";
+}
+
+function logout() {
+    localStorage.removeItem('userInfo');
+    window.location.href = 'info.html';
 }

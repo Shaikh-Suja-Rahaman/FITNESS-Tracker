@@ -10,6 +10,9 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
       rel="stylesheet"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   </head>
   <body>
     <!-- Modal for ChatBot -->
@@ -31,13 +34,14 @@
     <!-- Main Dashboard Container -->
     <div class="dashboard-wrapper">
       <header>
+        <button id="logout-button" onclick="logout()">Logout</button>
         <h1 class="Welcome-header"></h1>
       </header>
 
       <div class="welcome-container">
         <div class="Bigbox1">
           <div class="chart-container">
-            <h1 style="margin-top: 20px; margin-bottom: -25px; font-size: 23px">
+            <h1 class="chart-title" style="margin-top: 5px; margin-bottom: -25px; font-size: 23px">
               Workout Logger
             </h1>
             <!-- <button type="button" onclick="window.location.href = 'workoutLogger.html'">Details</button> -->
@@ -55,7 +59,9 @@
                 <div id="totalDuration">0</div>
               </div>
 
-              <button type="button" onclick="window.location.href = 'workoutLogger.html'">Details</button>
+              <button type="button"
+              style="height: 30px;"
+              onclick="window.location.href = 'workoutLogger.html'">Details</button>
 
 
             </div>
@@ -88,13 +94,13 @@
         </div>
         <div class="Bigbox2">
           <div class="box">
-            <h2>Food Nutrition Tracker</h2>
+            <h2 class="chart-title">Food Nutrition Tracker</h2>
             <button onclick="window.location.href = 'mealAdvisor.html';">
               Track Nutrition
             </button>
           </div>
           <div class="box">
-            <h2>Health Advisor ChatBot</h2>
+            <h2 class="chart-title">Health Advisor ChatBot</h2>
             <button id="chat-button" onclick="openModal()">Open Chat</button>
           </div>
         </div>

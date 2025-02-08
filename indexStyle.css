@@ -2,23 +2,27 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    color: white;
+    /* color: black;   */
   }
   
   body {
     font-family: Arial, sans-serif;
-    background-color: #121826;
+    background-color: rgb(218, 218, 218);
   }
   
   header {
     text-align:left;
     /* margin-left: 5px; */
-    background-color: #1E293B;
+    background-color: rgb(255, 255, 255);
     padding: 10px;
     margin-bottom: -10px;
     /* background-color: #2a204b; */
     font-size: 12px;
-    color: white;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Share Tech Mono", serif;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     
     
@@ -27,11 +31,13 @@
   .Welcome-header{
     display: flex;
     justify-content: center;
+    color: #606060;
   }
   .chart-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+  
   }
   
   /* Container for the four divs */
@@ -40,28 +46,33 @@
     justify-content: space-evenly; /* Evenly space the divs */
     align-items: center;
     /* background-color: blue;  Container background set to blue */
-    padding: 20px;
+    margin-top: 5px;
+    padding: 15px;
+    /* margin-right: 10px; */
     /* height: calc(100vh - 80px); Adjust height based on header height */
     flex-wrap: wrap;
-    padding: -10px;
+    /* padding: -10px; */
     height: 92vh;
     width: 100vw;
+    /* gap: -20px; */
     overflow-x:hidden;
   }
   
   /* Style for each div (box) */
   .box {
-    background-color: #1E293B; /* You can change this if you want the boxes to also be blue */
-    width: 600px;
+    background-color: rgb(255, 255, 255);; /* You can change this if you want the boxes to also be blue */
+    /* width: 600px; */
     height: 100%;
     gap: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 18px;
-    color: #333;
+    color: #424242;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
     
   }
 
@@ -70,14 +81,15 @@
       flex-direction: column;
       gap: 10px;
       height: 100%;
+      width: 30%;
   }
   .Bigbox1{
       height: 100%;
-      width: 50%;
-      color: #333;
+      width: 67%;
+      color: #606060;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-      background-color: #1E293B;
+      background-color: rgb(255, 255, 255);;
   }
 
   .glass {
@@ -137,7 +149,7 @@
     right: 10px;
     cursor: pointer;
     font-size: 24px;
-    color: #333;
+    color: #606060;
 }
 
 /* Chat container styles */
@@ -191,59 +203,48 @@
 
 
 /* CSS */
+
+/* CSS */
 button {
-  align-items: center;
-  appearance: none;
-  background-image: radial-gradient(100% 100% at 100% 0, #655197 0, #a954ff 100%);
-  border: 0;
+  background-color: initial;
+  background-image: linear-gradient(-180deg, #FF7E31, #E62C03);
   border-radius: 6px;
-  box-shadow: rgba(45, 35, 66, .4) 0 2px 4px,rgba(45, 35, 66, .3) 0 7px 13px -3px,rgba(58, 65, 111, .5) 0 -3px 0 inset;
-  box-sizing: border-box;
-  color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  color: #FFFFFF;
   cursor: pointer;
-  display: inline-flex;
-  font-family: "JetBrains Mono",monospace;
-  height: 48px;
-  justify-content: center;
-  line-height: 1;
-  list-style: none;
+  display: inline-block;
+  font-family: Inter,-apple-system,system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+  /* height: 40px; */
+  line-height: 40px;
+  outline: 0;
   overflow: hidden;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding: 0 20px;
+  pointer-events: auto;
   position: relative;
-  text-align: left;
-  text-decoration: none;
-  transition: box-shadow .15s,transform .15s;
+  text-align: center;
+  touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
-  touch-action: manipulation;
+  vertical-align: top;
   white-space: nowrap;
-  will-change: box-shadow,transform;
-  font-size: 18px;
-}
-
-button:focus {
-  box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
+  /* width: 100%; */
+  z-index: 9;
+  border: 0;
+  transition: box-shadow .2s;
 }
 
 button:hover {
-  box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
-  transform: translateY(-2px);
-}
-
-button:active {
-  box-shadow: #5d68b8 0 3px 7px inset;
-  transform: translateY(2px);
+  box-shadow: rgba(253, 76, 0, 0.5) 0 3px 8px;
 }
 
 
 #totalDuration {
-  color: red;
+  color: rgb(255, 108, 108);
   font-weight: 700;
 }
 
 #totalCalories {
-  color: red;
+  color: rgb(255, 108, 108);
   font-weight: 700;
 }
 
@@ -268,17 +269,28 @@ button:active {
 
 .chart-title {
   font-family: pacifico;
-  color: rgb(202, 202, 202);
+  color: rgb(99, 99, 99);
   font-weight: 400;
 }
 
-#logout-button {
+.logout-button {
   position: absolute;
-  height: 30px;
-  /* background-color: #FF6B6B; */
-  /* color: #fff; */
-  /* border: none; */
-  /* padding: 8px 16px; */
-  /* border-radius: 4px; */
-  /* cursor: pointer; */
+  top:10px;
+  left: 10px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #606060;
 }
+
+
+.DCContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px; /* Add spacing between elements */
+}
+
+
+

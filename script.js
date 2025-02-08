@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             userInfo = JSON.parse(userInfo);
             if (userInfo.username) {
-                document.querySelector(".Welcome-header").textContent = "Welcome " + userInfo.username;
+                document.querySelector(".Welcome-header").textContent = "WELCOME " + userInfo.username.toUpperCase()+"!";
             } else {
                 console.error("Username not found in userInfo");
             }
@@ -147,9 +147,8 @@ function initializeChart() {
         chart: {
             type: 'area',
             height: 250,
-            width: 550,
-            toolbar: { show: false },
-             // Dark mode background
+            width: 750,
+            toolbar: { show: false }
         },
         series: [
             {
@@ -158,43 +157,45 @@ function initializeChart() {
             },
             {
                 name: "Duration (minutes)",
-                data: [0]
+                data: []
             }
         ],
         xaxis: {
             categories: ["Arms", "Shoulders", "Legs", "Chest", "Back", "Abs", "Cardio"],
-            labels: { style: { colors: '#ffffff' } }
+            labels: { style: { colors: '#818281' } }
         },
         yaxis: {
-            title: { text: 'Calories (kcal) & Duration (min)', style: { color: '#ffffff' } },
-            labels: { style: { colors: '#ffffff' } },
+            title: { text: 'Calories (kcal) & Duration (min)', style: { color: '#818281' } },
+            labels: { style: { colors: '#818281' } },
             min: 0
         },
-        tooltip: { theme: 'dark' }, // Dark tooltips
         stroke: {
-            width: 3, // Thicker lines
-            curve: 'straight' // **Makes the chart pointy**
+            width: 3, 
+            curve: 'smooth' // ✅ Restores the smooth curve
         },
         fill: {
-            type: 'solid', // Ensures the area is filled
+            type: 'solid',
             opacity: 0.3
         },
         grid: {
             borderColor: '#444',
             strokeDashArray: 4
         },
-        colors: ['#FF6B6B', '#4DD0E1'],
-        dataLabels: { enabled: false }, // Remove peak labels
-        markers: {
-            size: 0, // Hide markers
-            hover: { size: 6 } // Show only on hover
+        colors: ['#57a8ff', '#ff6a00'], // ✅ Retaining colors
+        dataLabels: { 
+            enabled: true,  // ✅ Show data labels on tips
+            style: { colors: ['#9d9fa1'] } 
         },
-        legend: { labels: { colors: '#ffffff' } }
+        markers: {
+            size: 4, // ✅ Show points
+            hover: { size: 6 } // ✅ Highlight points on hover
+        }
     };
 
     chart = new ApexCharts(document.querySelector("#myChart"), options);
     chart.render();
 }
+
 
 
 // Remove the old updateChart function and replace with:
@@ -328,3 +329,4 @@ function logout() {
     localStorage.removeItem('userInfo');
     window.location.href = 'info.html';
 }
+

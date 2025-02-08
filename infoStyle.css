@@ -1,122 +1,120 @@
-* {
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
-body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: #292E49;
 }
 
 .container {
     display: flex;
-    width: 800px;
-    height: 500px;
-    background: rgba(255, 255, 255, 0.1); /* Ensure transparency */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    /* background: white; */
+    padding: 30px;
+    border-radius: 12px;
+    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
+    gap: 40px;
+    backdrop-filter: blur(2px) saturate(107%);
+    -webkit-backdrop-filter: blur(2px) saturate(107%);
+    background-color: rgba(255, 255, 255, 0.41);
+    border-radius: 12px;
+    border: 1px solid rgba(209, 213, 219, 0.3);
 }
+.glass {
+    backdrop-filter: blur(2px) saturate(107%);
+    -webkit-backdrop-filter: blur(2px) saturate(107%);
+    background-color: rgba(255, 255, 255, 0.41);
+    border-radius: 12px;
+    border: 1px solid rgba(209, 213, 219, 0.3);
+  }
 
+/* Left Section */
 .left {
-    width: 50%;
-    background: rgba(255, 255, 255, 0.31);
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    
-    color: white;
+    flex: 1;
+    text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    text-align: center;
 }
 
+.left h1 {
+    color: #ff6a00;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.left p {
+    font-size: 16px;
+    color: #666;
+}
+
+/* Right Section */
 .right {
-    color: white;
-    width: 50%;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    width: 400px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
-    margin-bottom: 20px;
-    font-family: poppins;
-    font-size: 20px;
+.right h2 {
+    text-align: center;
+    color: #333;
 }
 
 form {
     display: flex;
     flex-direction: column;
+    gap: 10px;
 }
 
 label {
-    font-weight: bold;
-    margin-top: 10px;
+    font-weight: 500;
+    color: #333;
 }
 
-input {
+input, select {
     padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
     border-radius: 5px;
-    width: 100%;
-}
-
-.options {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    font-size: 14px;
-}
-
-.options a {
-    text-decoration: none;
-    color: #5dc1b9;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
 }
 
 button {
-    background: #8677b6;
-    color: white;
-    border: none;
-    padding: 10px;
-    margin-top: 20px;
-    border-radius: 5px;
+    background-color: initial;
+    background-image: linear-gradient(-180deg, #FF7E31, #E62C03);
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+    color: #FFFFFF;
     cursor: pointer;
-    font-size: 16px;
-}
-
-button:hover {
-    background: #7363a1;
-
-}
-
-h1 {
-    font-family: poppins;
-}
-
-p {
-    margin-bottom: 20px;
-    font-family: poppins;
-    font-size: 20px;
-}
-
-#gender {
-    height: 35px;
-    border-radius: 5px;
-    margin-top: 3px;
-    border: 1px solid rgb(207, 207, 207);
-    outline: none;
-    padding-left: 6px;
-    padding-right: 6px;
-}
+    display: inline-block;
+    font-family: Inter,-apple-system,system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+    /* height: 40px; */
+    line-height: 40px;
+    outline: 0;
+    overflow: hidden;
+    padding: 0 20px;
+    pointer-events: auto;
+    position: relative;
+    text-align: center;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: top;
+    white-space: nowrap;
+    /* width: 100%; */
+    z-index: 9;
+    border: 0;
+    transition: box-shadow .2s;
+  }
+  
+  button:hover {
+    box-shadow: rgba(253, 76, 0, 0.5) 0 3px 8px;
+  }

@@ -287,7 +287,7 @@ async function sendMessage() {
         botResponse = formatResponse(botResponse);
         addMessageToChat('bot', botResponse);
         chatHistory.push({ role: 'model', parts: [{ text: botResponse }] });
-
+        console.log(chatHistory);
     } catch (error) {
         console.error('Error:', error);
         addMessageToChat('bot', "Sorry, I'm having trouble responding.");
@@ -330,3 +330,11 @@ function logout() {
     window.location.href = 'info.html';
 }
 
+
+function handleLogout() {
+    let userConfirmer = confirm("Are you sure you want to logout? Logging out wll clear all your data.");
+    if (userConfirmer) {
+        localStorage.removeItem('workouts');
+        logout();
+    }
+}

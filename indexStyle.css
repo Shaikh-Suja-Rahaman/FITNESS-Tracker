@@ -37,6 +37,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
   
   }
   
@@ -45,6 +46,7 @@
     display: flex;
     justify-content: space-evenly; /* Evenly space the divs */
     align-items: center;
+    /* align-items: center; */
     /* background-color: blue;  Container background set to blue */
     margin-top: 5px;
     padding: 15px;
@@ -84,6 +86,10 @@
       width: 30%;
   }
   .Bigbox1{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
       height: 100%;
       width: 67%;
       color: #606060;
@@ -294,3 +300,11 @@ button:hover {
 
 
 
+.form-container {
+  
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  padding: 10px;
+  margin-top: -20px;
+  width: 80%;
+  margin-bottom: 10px;
+}

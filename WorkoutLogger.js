@@ -154,7 +154,7 @@ function initializeChart() {
         fill: {
             opacity: 0.2
         },
-        colors: ['#FF4560', '#008FFB']
+        colors: ['#57a8ff', '#ff6a00']
     };
 
     chart = new ApexCharts(document.querySelector("#myChart"), options);

@@ -7,18 +7,22 @@
   <link rel="stylesheet" href="WorkoutLogger.css">
 </head>
 <body>
+  <button class="back-button" onclick="window.location.href = 'index.html';">Back</button>
   <h1>Workout Logger</h1>
   <div class="flex-container">
     <div class="chart-container">
       <div id="myChart"></div>
-      <div class="total-calories-box glass">
-        <h3>Total Calories Burned</h3>
-        <div id="totalCalories">0</div>
-      </div>
-      <div class="total-duration-box glass">
-        <h3>Total Duration Spent</h3>
-        <div id="totalDuration">0</div>
-      </div>
+
+      <div class="stats">
+        <div class="total-calories-box glass">
+          <h3>Total Calories Burned</h3>
+          <div id="totalCalories">0</div>
+        </div>
+        <div class="total-duration-box glass">
+          <h3>Total Duration Spent</h3>
+          <div id="totalDuration">0</div>
+        </div>
+    </div>
     </div>
     <div class="form-container">
       <form id="workoutForm">

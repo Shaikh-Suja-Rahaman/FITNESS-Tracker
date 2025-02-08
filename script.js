@@ -257,6 +257,12 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+});
+
 async function sendMessage() {
     const userInput = document.getElementById('user-input');
     const message = userInput.value.trim();

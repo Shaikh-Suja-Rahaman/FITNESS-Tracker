@@ -178,7 +178,7 @@
 }
 
 .user { 
-    background: #e3f2fd; 
+    background: #fde1af; 
     text-align: right; 
 }
 
@@ -307,4 +307,13 @@ button:hover {
   margin-top: -20px;
   width: 80%;
   margin-bottom: 10px;
+}
+
+.sending-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+   /* Add spacing between elements */
 }

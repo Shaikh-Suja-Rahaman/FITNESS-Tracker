@@ -317,3 +317,8 @@ button:hover {
   flex-wrap: wrap;
    /* Add spacing between elements */
 }
+
+.chart-title2 {
+  font-family: "poppins";
+  font-weight:300;
+}
